@@ -2,7 +2,7 @@
 export const formatCurrency = (value) => {
   return value.toLocaleString("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: "KSH",
     minimumFractionDigits: 2, // Ensures two decimal places
   });
 };
