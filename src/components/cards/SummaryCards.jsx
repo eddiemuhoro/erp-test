@@ -1,3 +1,7 @@
+import { AiOutlineRise } from "react-icons/ai";
+import { FaMoneyBillAlt } from "react-icons/fa";
+import { GiPiggyBank } from "react-icons/gi";
+import { GoNumber } from "react-icons/go";
 import { formatCurrency } from "../../formulas/formatCurrency";
 
 const SummaryCards = ({ sales }) => {
@@ -57,7 +61,10 @@ const SummaryCards = ({ sales }) => {
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
-        <div className="bg-blue-100 p-4 rounded-lg shadow">
+        <div className="bg-blue-100 p-4 rounded-lg shadow relative">
+          <div className="absolute top-1 right-2 bg-blue-200 p-2 rounded-full">
+            <FaMoneyBillAlt className="text-3xl text-blue-700" />
+          </div>
           <h3 className="text-lg font-semibold text-blue-700">Total Sales</h3>
           <p className="text-2xl font-bold text-blue-900">{last30TotalSales}</p>
           <p
@@ -70,7 +77,10 @@ const SummaryCards = ({ sales }) => {
           </p>
         </div>
 
-        <div className="bg-green-100 p-4 rounded-lg shadow">
+        <div className="bg-green-100 p-4 rounded-lg shadow relative">
+          <div className="absolute top-1 right-2 bg-green-200 p-2 rounded-full">
+            <GoNumber className="text-3xl text-green-700" />
+          </div>
           <h3 className="text-lg font-semibold text-green-700">
             Total Items Purchased
           </h3>
@@ -87,7 +97,10 @@ const SummaryCards = ({ sales }) => {
           </p>
         </div>
 
-        <div className="bg-yellow-100 p-4 rounded-lg shadow">
+        <div className="bg-yellow-100 p-4 rounded-lg shadow relative">
+          <div className="absolute top-1 right-2 bg-yellow-200 p-2 rounded-full">
+            <GiPiggyBank className="text-3xl text-yellow-700" />
+          </div>
           <h3 className="text-lg font-semibold text-yellow-700">
             Total Revenue
           </h3>
@@ -104,7 +117,10 @@ const SummaryCards = ({ sales }) => {
           </p>
         </div>
 
-        <div className="bg-purple-100 p-4 rounded-lg shadow">
+        <div className="bg-purple-100 p-4 rounded-lg shadow relative">
+          <div className="absolute top-1 right-2 bg-purple-200 p-2 rounded-full">
+            <AiOutlineRise className="text-3xl text-purple-700" />
+          </div>
           <h3 className="text-lg font-semibold text-purple-700">
             Average Sale Value
           </h3>

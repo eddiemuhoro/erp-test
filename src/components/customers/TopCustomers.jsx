@@ -1,4 +1,5 @@
 import React from "react";
+import { formatCurrency } from "../../formulas/formatCurrency";
 
 const TopCustomersAndItems = ({ sales }) => {
   const customerRevenue = sales.reduce((acc, sale) => {
@@ -52,7 +53,7 @@ const TopCustomersAndItems = ({ sales }) => {
                   {customer.name === "" ? "Customer A" : customer.name}
                 </td>
                 <td className="px-4 py-2 border border-gray-300">
-                  ${customer.revenue.toFixed(2)}
+                  {formatCurrency(customer.revenue)}
                 </td>
               </tr>
             ))}

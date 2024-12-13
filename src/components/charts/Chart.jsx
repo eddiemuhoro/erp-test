@@ -35,13 +35,12 @@ const Chart = ({ sales }) => {
 
   console.log(customerName);
 
-  const totalItemsByCategory = sales.reduce((acc, sale) => {
-    sale.items.forEach((item) => {
-      acc[item.description] =
-        (acc[item.description] || 0) + item.quantity_purchased;
-    });
-    return acc;
-  }, {});
+  const topCustomer = customerName.reduce(
+    (top, current, index) => {
+      return revenue[index] > top[1] ? [current, revenue[index]] : top;
+    },
+    ["", 0]
+  );
 
   const pieChartData = {
     labels: customerName,
@@ -97,8 +96,8 @@ const Chart = ({ sales }) => {
 
   return (
     <div className="bg-white shadow rounded-lg p-4">
-      <h3 className="text-lg font-semibold mb-4">Revenue by Customer</h3>
-      <div className="h-[300px]">
+      <h3 className="text-2xl font-semibold mb-4">Revenue by Customer</h3>
+      <div className="h-[300px] ">
         <Pie data={pieChartData} options={pieChartOptions} />
       </div>
     </div>

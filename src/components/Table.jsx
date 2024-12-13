@@ -5,10 +5,13 @@ import SummaryCards from "./cards/SummaryCards";
 import Chart from "./charts/Chart";
 import SalesLineChart from "./charts/SalesLineChart";
 import TopCustomersTable from "./customers/TopCustomers";
+import TopCustomers from "./charts/TopCustomers";
+import PaymentCompletion from "./charts/PaymentCompletion";
 
 const Table = () => {
   const [salesData, setSalesData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -67,6 +70,9 @@ const Table = () => {
       endTotal: null,
     });
   };
+  const appliedFiltersCount = Object.values(filters).filter(
+    (value) => value !== "" && value !== null && value !== undefined
+  ).length;
 
   console.log(filters);
 
@@ -76,89 +82,105 @@ const Table = () => {
     <div>
       <h1 className="text-2xl font-bold mb-4">Sales-ERP</h1>
       <SummaryCards sales={salesData} />
-      <div className="mb-6 flex flex-col md:flex-row gap-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Start Date
-          </label>
-          <input
-            type="date"
-            name="startDate"
-            value={filters.startDate}
-            onChange={handleFilterChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            End Date
-          </label>
-          <input
-            type="date"
-            name="endDate"
-            value={filters.endDate}
-            onChange={handleFilterChange}
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Customer
-          </label>
-          <input
-            type="text"
-            name="customer"
-            value={filters.customer}
-            onChange={handleFilterChange}
-            placeholder="Enter customer name"
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="w-full p-2 bg-gray-200 text-gray-700 rounded flex items-center justify-between"
+      >
+        <span>{isExpanded ? "Hide Filters" : "Show Filters"}</span>
+        <span>
+          {appliedFiltersCount > 0 && !isExpanded
+            ? `(${appliedFiltersCount} filters applied)`
+            : ""}
+          {isExpanded ? "▲" : "▼"}
+        </span>
+      </button>
+      {isExpanded && (
+        <div className="mb-6 flex flex-col md:flex-row gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Start Date
+            </label>
+            <input
+              type="date"
+              name="startDate"
+              value={filters.startDate}
+              onChange={handleFilterChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              End Date
+            </label>
+            <input
+              type="date"
+              name="endDate"
+              value={filters.endDate}
+              onChange={handleFilterChange}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            Start Total
-          </label>
-          <input
-            type="number"
-            name="startTotal"
-            value={filters.startTotal}
-            onChange={handleFilterChange}
-            placeholder="Enter start total"
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Customer
+            </label>
+            <input
+              type="text"
+              name="customer"
+              value={filters.customer}
+              onChange={handleFilterChange}
+              placeholder="Enter customer name"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700">
-            End Total
-          </label>
-          <input
-            type="number"
-            name="endTotal"
-            value={filters.endTotal}
-            onChange={handleFilterChange}
-            placeholder="Enter end total"
-            className="mt-1 block w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Start Total
+            </label>
+            <input
+              type="number"
+              name="startTotal"
+              value={filters.startTotal}
+              onChange={handleFilterChange}
+              placeholder="Enter start total"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
 
-        <button
-          onClick={clearFilters}
-          className="mt-4 md:mt-0 p-2 bg-gray-200 text-gray-700 rounded"
-        >
-          Clear Filters
-        </button>
-      </div>
-      <section className="flex flex-col md:flex-row gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              End Total
+            </label>
+            <input
+              type="number"
+              name="endTotal"
+              value={filters.endTotal}
+              onChange={handleFilterChange}
+              placeholder="Enter end total"
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+            />
+          </div>
+
+          <button
+            onClick={clearFilters}
+            className="mt-4 md:mt-0 p-2 bg-gray-200 text-gray-700 rounded"
+          >
+            Clear Filters
+          </button>
+        </div>
+      )}
+      <section className="flex flex-col-reverse md:flex-row gap-4">
         <div className="w-full md:w-2/3 h-full">
           <SalesTable salesData={filteredSales} />
           <TopCustomersTable sales={filteredSales} />
         </div>
-        <div className="w-full md:w-1/3">
+        <div className="w-full flex flex-col gap-2 md:w-1/3">
           <SalesLineChart sales={filteredSales} />
           <Chart sales={filteredSales} />
+          <PaymentCompletion sales={filteredSales} />
         </div>
       </section>
     </div>
@@ -183,8 +205,8 @@ const SalesTable = ({ salesData }) => {
   };
 
   return (
-    <div className="w-full">
-      <table className="w-full table-auto border-collapse border border-gray-300">
+    <div className="w-full overflow-auto">
+      <table className="w-full table-auto border-collapse border border-gray-300 ">
         <thead>
           <tr className="bg-gray-100">
             <th className="px-4 py-2 border border-gray-300 text-left">
